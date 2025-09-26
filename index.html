@@ -1,0 +1,258 @@
+<!DOCTYPE html> 
+    <html lang="es"> 
+    <head>
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>Galería y Escritos</title> 
+        <link rel="stylesheet" href="assets/css/style.css"> 
+    </head> 
+    
+    <body>
+        <!-- Página de Login --> 
+        <div id="loginPage" class="page active"> 
+            <div class="login-container"> 
+                <div class="login-form"> 
+                    <h1>Acceso a la Galería</h1> 
+                    <form id="loginForm"> 
+                        <div class="form-group"> 
+                            <label for="username">Usuario</label> 
+                            <input type="text" id="username" name="username" class="form-control" required> 
+                        </div> 
+                        <div class="form-group"> 
+                            <label for="password">Contraseña</label> 
+                            <input type="password" id="password" name="password" class="form-control" required> 
+                        </div> 
+                        <button type="submit" class="btn btn--primary btn--full-width">Iniciar Sesión</button> 
+                    </form> 
+                    <div id="loginError" class="error-message hidden"></div> 
+                    <div class="login-help"> 
+                        <p>Usuarios de prueba:</p> 
+                        <p><strong>admin/admin123</strong> - Control Total</p> 
+                        <p><strong>editor/editor123</strong> - Control Parcial</p> 
+                        <p><strong>viewer/viewer123</strong> - Solo Visualización</p> 
+                    </div> 
+                </div> 
+            </div> 
+        </div>
+
+        <!-- Página Principal -->
+<div id="mainPage" class="page">
+    <!-- Barra de Navegación -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h2>Galería Personal</h2>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" data-section="galleries">Galerías</button>
+            <button class="nav-btn" data-section="stories">Escritos</button>
+            <button class="nav-btn" data-section="users">Usuarios</button>
+            <button class="nav-btn logout-btn">Cerrar Sesión</button>
+        </div>
+        <div class="user-info">
+            <span id="currentUser"></span>
+            <span id="userRole" class="role-badge"></span>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+        <!-- Sección de Galerías -->
+        <section id="galleriesSection" class="content-section active">
+            <div class="section-header">
+                <h1>Galerías de Fotos</h1>
+                <button id="addGalleryBtn" class="btn btn--primary">Nueva Galería</button>
+            </div>
+            <div id="galleriesContainer" class="galleries-grid">
+                <!-- Las galerías se cargarán dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Sección de Escritos -->
+        <section id="storiesSection" class="content-section">
+            <div class="section-header">
+                <h1>Escritos y Cuentos</h1>
+                <button id="addStoryBtn" class="btn btn--primary">Nuevo Escrito</button>
+            </div>
+            <div id="storiesContainer" class="stories-accordion">
+                <!-- Los escritos se cargarán dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Sección de Usuarios -->
+        <section id="usersSection" class="content-section">
+            <div class="section-header">
+                <h1>Gestión de Usuarios</h1>
+                <button id="addUserBtn" class="btn btn--primary">Nuevo Usuario</button>
+            </div>
+            <div id="usersContainer" class="users-grid">
+                <!-- Los usuarios se cargarán dinámicamente -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer con Calendario -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="calendar-section">
+                <h3>Calendario de Citas</h3>
+                <form id="appointmentForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appointmentDate">Fecha</label>
+                            <input type="date" id="appointmentDate" name="date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="appointmentTitle">Título</label>
+                            <input type="text" id="appointmentTitle" name="title" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentDescription">Descripción</label>
+                        <textarea id="appointmentDescription" name="description" class="form-control" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn--secondary">Agregar Cita</button>
+                </form>
+                <div id="appointmentsList" class="appointments-list">
+                    <!-- Las citas se mostrarán aquí -->
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Modal para Galería de Fotos -->
+<div id="galleryModal" class="modal">
+    <div class="modal-content gallery-modal-content">
+        <div class="modal-header">
+            <h2 id="galleryModalTitle"></h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="galleryPhotos" class="gallery-photos">
+                <!-- Las fotos se cargarán aquí -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Expandir Foto -->
+<div id="photoModal" class="modal">
+    <div class="modal-content photo-modal-content">
+        <button class="modal-close">&times;</button>
+        <img id="expandedPhoto" src="" alt="Foto expandida">
+    </div>
+</div>
+
+<!-- Modal para Escritos -->
+<div id="storyModal" class="modal">
+    <div class="modal-content story-modal-content">
+        <div class="modal-header">
+            <h2 id="storyModalTitle"></h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="storyContent" class="story-content">
+                <!-- El contenido del escrito se cargará aquí -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Agregar Galería -->
+<div id="addGalleryModal" class="modal">
+    <div class="modal-content form-modal-content">
+        <div class="modal-header">
+            <h2>Nueva Galería</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="newGalleryForm">
+                <div class="form-group">
+                    <label for="galleryTitle">Título</label>
+                    <input type="text" id="galleryTitle" name="title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="galleryDescription">Descripción</label>
+                    <textarea id="galleryDescription" name="description" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="galleryPhotos">Fotos (URLs separadas por líneas)</label>
+                    <textarea id="galleryPhotos" name="photos" class="form-control" rows="5" placeholder="https://ejemplo.com/foto1.jpg&#10;https://ejemplo.com/foto2.jpg"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn--secondary modal-close">Cancelar</button>
+                    <button type="submit" class="btn btn--primary">Crear Galería</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Agregar Escrito -->
+<div id="addStoryModal" class="modal">
+    <div class="modal-content form-modal-content">
+        <div class="modal-header">
+            <h2>Nuevo Escrito</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="newStoryForm">
+                <div class="form-group">
+                    <label for="storyTitle">Título</label>
+                    <input type="text" id="storyTitle" name="title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="storyContent">Contenido</label>
+                    <textarea id="storyContentInput" name="content" class="form-control" rows="15" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn--secondary modal-close">Cancelar</button>
+                    <button type="submit" class="btn btn--primary">Crear Escrito</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Agregar Usuario -->
+<div id="addUserModal" class="modal">
+    <div class="modal-content form-modal-content">
+        <div class="modal-header">
+            <h2>Nuevo Usuario</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="newUserForm">
+                <div class="form-group">
+                    <label for="newUsername">Nombre de Usuario</label>
+                    <input type="text" id="newUsername" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Contraseña</label>
+                    <input type="password" id="newPassword" name="password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="newName">Nombre Completo</label>
+                    <input type="text" id="newName" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="newRole">Nivel de Acceso</label>
+                    <select id="newRole" name="role" class="form-control" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="total">Control Total</option>
+                        <option value="partial">Control Parcial</option>
+                        <option value="none">Sin Poder</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn--secondary modal-close">Cancelar</button>
+                    <button type="submit" class="btn btn--primary">Crear Usuario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
